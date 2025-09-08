@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+
+/* Clases personalizadas */
+.primary-background-color {
+    background-color: #192633;
+}
+.secondary-background-color {
+    background-color: #111A22;
+}
+.btn-background-color {
+    background-color: #8E7AFF;
+}

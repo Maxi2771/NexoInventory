@@ -15,7 +15,7 @@ function Productos() {
 
 
     return (
-        <div className="flex text-white flex-col">
+        <>
             <div className="grid grid-cols-5 grid-rows-2 gap-8">
                 <div className="col-span-3 items-center">
                     <h1>
@@ -39,7 +39,7 @@ function Productos() {
                 </div>
             </div>
             <Table columns={productColumns} data={[]} />
-        </div>
+        </>
     );
 }
 

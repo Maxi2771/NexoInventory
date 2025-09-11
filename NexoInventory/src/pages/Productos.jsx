@@ -1,6 +1,7 @@
 import DropdownButton from "../components/DropdownButton ";
 import SearchBar from "../components/SearchBar";
 import Table from "../components/Table";
+import "../assets/style/input.css"
 
 function Productos() {
 
@@ -22,21 +23,13 @@ function Productos() {
                         Inventario de productos
                     </h1>
                 </div>
-                <div>
-                    <DropdownButton label="Agregar Producto" />
-                </div>
-                <div>
-                    <DropdownButton label="Exportar" />
-                </div>
+                <DropdownButton label="Agregar Producto" />
+                <DropdownButton label="Exportar" />
                 <div className="col-span-3">
                     <SearchBar placeholder="Buscar productos..." />
                 </div>
-                <div>
-                    <DropdownButton label="Ordenar por" />
-                </div>
-                <div>
-                    <DropdownButton label="Categoria" />
-                </div>
+                <DropdownButton label="Ordenar por" />
+                <DropdownButton label="Categoria" />
             </div>
             <Table columns={productColumns} data={[]} />
         </div>

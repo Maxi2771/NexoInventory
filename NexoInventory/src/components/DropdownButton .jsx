@@ -1,10 +1,11 @@
-function DropdownButton({label}) {
+
+function DropdownButton({ label }) {
     return (
-        <div>
+        <>
             <button>
                 {label}
             </button>
-        </div>
+        </>
     );
 }
 

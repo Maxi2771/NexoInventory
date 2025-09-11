@@ -23,14 +23,10 @@ function Productos() {
                     </h1>
                 </div>
                 <div>
-                    <button>
-                        Agregar Producto
-                    </button>
+                    <DropdownButton label="Agregar Producto" />
                 </div>
                 <div>
-                    <button>
-                        Importar/Exportar
-                    </button>
+                    <DropdownButton label="Exportar" />
                 </div>
                 <div className="col-span-3">
                     <SearchBar placeholder="Buscar productos..." />

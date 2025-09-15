@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "tailwindcss/preflight";
-
 /* Clases personalizadas */
 .primary-background-color {
     background-color: #192633;

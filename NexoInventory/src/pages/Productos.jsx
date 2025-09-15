@@ -1,7 +1,10 @@
 import DropdownButton from "../components/DropdownButton ";
 import SearchBar from "../components/SearchBar";
 import Table from "../components/Table";
+import Header from "../components/header";
 import "../assets/style/input.css"
+import DownArrow from "../assets/img/icons/DownArrow";
+
 
 function Productos() {
 
@@ -13,25 +16,25 @@ function Productos() {
         { header: "Stock", accessor: "stock" },
         { header: "Acciones", accessor: "actions" },
     ];
+    const productData = [
+        { id: '12345', nombre: 'Auriculares Inalámbricos', categoria: 'Audio', precio: '$150.00', stock: 100, proveedor: 'Proveedor A' },
+        { id: '54353', nombre: 'Smartphone Galaxy X', categoria: 'Móviles', precio: '$200.00', stock: 50, proveedor: 'Proveedor B' },
+        { id: '57567', nombre: 'Laptop UltraBook Pro', categoria: 'Computadoras', precio: '$450.00', stock: 30, proveedor: 'Proveedor C' },
+    ];
 
 
     return (
         <div className="flex text-white flex-col">
-            <div className="grid grid-cols-5 grid-rows-2 gap-8">
-                <div className="col-span-3 items-center">
-                    <h1>
-                        Inventario de productos
-                    </h1>
-                </div>
-                <DropdownButton label="Agregar Producto" />
-                <DropdownButton label="Exportar" />
-                <div className="col-span-3">
-                    <SearchBar placeholder="Buscar productos..." />
-                </div>
-                <DropdownButton label="Ordenar por" />
-                <DropdownButton label="Categoria" />
+            <Header title="Inventario de productos">
+                <SearchBar placeholder="Buscar por nombre de proveedor..." />
+                <DropdownButton label="Agregar producto" icon={null} />
+                <DropdownButton label="Importar|Exportar" icon={null} />
+                <DropdownButton label="Ordenar por" icon={DownArrow}/>
+                <DropdownButton label="Categoría" icon={DownArrow} />
+            </Header>
+            <div className="bg-gray-900 p-8 min-h-screen">
+                <Table columns={productColumns} data={productData} />
             </div>
-            <Table columns={productColumns} data={[]} />
         </div>
     );
 }

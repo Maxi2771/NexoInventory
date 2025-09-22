@@ -13,7 +13,7 @@ function Layout() {
                 <Btn to="/productos" icon={ProductosI}>Productos</Btn>
                 <Btn to="/movimientos" icon={MovimientosI}>Movimientos</Btn>
             </Menu>
-            <main className="flex-1 bg-gray-900">
+            <main className="flex-1 bg-gray-900 min-h-screen">
                 <Outlet />
             </main>
         </div>

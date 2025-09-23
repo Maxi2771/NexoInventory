@@ -1,7 +1,7 @@
 import DropdownButton from "../components/DropdownButton ";
 import SearchBar from "../components/SearchBar";
 import Table from "../components/Table";
-import Header from "../components/header";
+import Header from "../components/Header";
 import DownArrow from "../assets/img/icons/DownArrow";
 
 function Movimientos() {
@@ -22,7 +22,7 @@ function Movimientos() {
     ];
 
     return (
-        <div className="flex text-white flex-col w-full p-4">
+        <div className="flex text-white flex-col w-full p-4 items-center">
             <Header title="Movimientos">
                 <SearchBar placeholder="Buscar por nombre de proveedor..." />
                 <DropdownButton label="Agregar producto" icon={null} />
@@ -30,9 +30,7 @@ function Movimientos() {
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>
-            <div className="bg-gray-900 p-8 min-h-screen">
-                <Table columns={movimientoColumns} data={movimientoData} />
-            </div>
+            <Table columns={movimientoColumns} data={movimientoData} />
         </div>
     );
 }

@@ -1,10 +1,10 @@
 import CardStat from "../components/CardStat";
-import Header from "../components/header";
+import Header from "../components/Header";
 import TopProductsChart from "../components/TopProductsChart";
 import StockAlerts from "../components/StockAlerts";
+import PieChart from "../components/PieChart";
 
 function Dashboard() {
-    const stockTotalValue = "1,264";
     const bajoStockValue = "15";
     const ventasHoyValue = "41";
     const montoVentasValue = "$4,203";
@@ -12,28 +12,27 @@ function Dashboard() {
     return (
         <div className="flex text-white flex-col w-full p-4">
             <Header title="DashBoard"></Header>
-            <div className="grid grid-cols-4 gap-6">
-                <CardStat title="Stock total" value={stockTotalValue} />
-                <CardStat
-                    title="Productos con bajo stock"
-                    value={bajoStockValue}
-                    isAlert={true}
-                />
-                <CardStat
-                    title="Ventas de hoy"
-                    value={ventasHoyValue}
-                    detail="+10% vs ayer"
-                />
-                <CardStat
-                    title="Monto de ventas de hoy"
-                    value={montoVentasValue}
-                    detail="+5% vs ayer"
-                />
-                <div className="col-span-3">
-                    <TopProductsChart />
+            <div className="flex flex-col items-center">
+                <div className="flex w-7xl justify-between">
+                    <CardStat
+                        title="Ventas de hoy"
+                        value={ventasHoyValue}
+                        detail="+10% vs ayer"
+                    />
+                    <CardStat
+                        title="Monto de ventas de hoy"
+                        value={montoVentasValue}
+                        detail="+5% vs ayer"
+                    />
+                    <PieChart/>
+                    <CardStat
+                        title="Productos con bajo stock"
+                        value={bajoStockValue}
+                        isAlert={true}
+                    />
                 </div>
-
-                <div className="col-span-1">
+                <div className="flex w-7xl justify-between m-5">
+                    <TopProductsChart />
                     <StockAlerts />
                 </div>
             </div>

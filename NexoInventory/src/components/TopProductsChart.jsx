@@ -2,7 +2,7 @@
 
 function TopProductsChart() {
     return (
-        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 w-234">
             <h3 className="text-lg font-semibold mb-6">Productos más vendidos</h3>
             <div className="space-y-5">
                 <div>

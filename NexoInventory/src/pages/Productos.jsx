@@ -1,7 +1,7 @@
 import DropdownButton from "../components/DropdownButton ";
 import SearchBar from "../components/SearchBar";
 import Table from "../components/Table";
-import Header from "../components/header";
+import Header from "../components/Header";
 import "../assets/style/input.css"
 import DownArrow from "../assets/img/icons/DownArrow";
 
@@ -23,7 +23,7 @@ function Productos() {
 
 
     return (
-        <div className="flex text-white flex-col w-full p-4">
+        <div className="flex text-white flex-col w-full p-4 items-center">
             <Header title="Inventario de productos">
                 <SearchBar placeholder="Buscar por nombre de proveedor..." />
                 <DropdownButton label="Agregar producto" icon={null} />
@@ -31,9 +31,7 @@ function Productos() {
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>
-            <div className="bg-gray-900 p-8 min-h-screen">
-                <Table columns={productColumns} data={productData} />
-            </div>
+            <Table columns={productColumns} data={productData} />
         </div>
     );
 }

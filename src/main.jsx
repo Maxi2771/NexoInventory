@@ -4,9 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import "./assets/style/input.css"
 
+const repo = 'NexoInventory'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={repo}>
       <App />
     </BrowserRouter>
   </StrictMode>,

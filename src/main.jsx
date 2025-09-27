@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import "./assets/style/input.css"
 import { UserProvider } from './Contexts/UserContext.jsx'
+import { ProductosProvider } from './Contexts/ProductosContext.jsx'
 
 const repo = 'NexoInventory'
 
@@ -11,7 +12,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter basename={repo}>
       <UserProvider>
-        <App />
+        <ProductosProvider>
+          <App />
+        </ProductosProvider>
       </UserProvider>
     </BrowserRouter>
   </StrictMode>,

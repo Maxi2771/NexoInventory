@@ -4,8 +4,11 @@ import Table from "../components/Table";
 import Header from "../components/Header";
 import "../assets/style/input.css"
 import DownArrow from "../assets/img/icons/DownArrow";
+import { useProductos } from "../Contexts/ProductosContext";
 
 function Productos() {
+
+const { productos } = useProductos();
 
     const productColumns = [
         { header: "ID", accessor: "id" },
@@ -16,9 +19,9 @@ function Productos() {
         { header: "Acciones", accessor: "actions" },
     ];
     const productData = [
-        { id: '12345', nombre: 'Auriculares Inalámbricos', categoria: 'Audio', precio: '$150.00', stock: 100, proveedor: 'Proveedor A' },
-        { id: '54353', nombre: 'Smartphone Galaxy X', categoria: 'Móviles', precio: '$200.00', stock: 50, proveedor: 'Proveedor B' },
-        { id: '57567', nombre: 'Laptop UltraBook Pro', categoria: 'Computadoras', precio: '$450.00', stock: 30, proveedor: 'Proveedor C' },
+        ...productos.map(producto => ({
+            ...producto
+        }))
     ];
 
 

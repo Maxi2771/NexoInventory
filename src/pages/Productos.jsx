@@ -8,7 +8,7 @@ import { useProductos } from "../Contexts/ProductosContext";
 
 function Productos() {
 
-const { productos } = useProductos();
+const { productos, eliminarProducto } = useProductos();
 
     const productColumns = [
         { header: "ID", accessor: "id" },
@@ -18,12 +18,6 @@ const { productos } = useProductos();
         { header: "Stock", accessor: "stock" },
         { header: "Acciones", accessor: "actions" },
     ];
-    const productData = [
-        ...productos.map(producto => ({
-            ...producto
-        }))
-    ];
-
 
     return (
         <div className="flex text-white flex-col w-full p-4 items-center">
@@ -34,7 +28,7 @@ const { productos } = useProductos();
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>
-            <Table columns={productColumns} data={productData} />
+            <Table columns={productColumns} data={productos} onDelete={eliminarProducto}/>
         </div>
     );
 }

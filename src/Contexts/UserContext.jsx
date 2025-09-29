@@ -3,14 +3,25 @@ import React, { useState, useContext, useMemo } from 'react';
 const UserContext = React.createContext();
 
 export function UserProvider({ children }) {
-const [user, setUser] = useState({
-        name: "Fabrizio Amado",
-        email: "fabrizio@email.com",
-        role: "Admin",
-    });
+const [user, setUser] = useState(null);
 
-    const login = () => setUser({ name: "", email: "" });
+    const TEST_CREDENTIALS = {
+        usuario: 'admin',
+        password: 'admin123',
+        name: 'Admin Demo',
+        role: 'Admin',
+    };
+
+    const login = (userData) => setUser(userData ?? { name: 'Usuario', role: 'User' });
     const logout = () => { setUser(null); };
+
+    const authenticate = ({ usuario, password }) => {
+        const ok = usuario === TEST_CREDENTIALS.usuario && password === TEST_CREDENTIALS.password;
+        if (ok) {
+            setUser({ name: TEST_CREDENTIALS.name, role: TEST_CREDENTIALS.role });
+        }
+        return ok;
+    };
 
     // useMemo evita que el objeto 'value' se cree de nuevo en cada render a menos que el estado 'user' cambie.
     const value = useMemo(
@@ -19,6 +30,7 @@ const [user, setUser] = useState({
             isAuthenticated: !!user, //V si hay usuario, F si no
             login,
             logout,
+            authenticate,
         }),
         [user]
     );

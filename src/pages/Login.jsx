@@ -21,8 +21,8 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-800 text-white">
-            <div className="w-full max-w-md p-8 space-y-6 bg-gray-900 rounded-lg shadow-lg">
+        <div className="flex items-center justify-center min-h-screen bg-[url(src/assets/img/bg_login.png)] bg-black bg-cover text-white">
+            <div className="w-full max-w-md p-8 space-y-6 rounded-lg shadow-lg transparent bg-white/12">
                 <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
 
                 <Formik
@@ -40,22 +40,22 @@ function LoginPage() {
                     }}
                 >
                     {({ isSubmitting, status }) => (
-                        <Form className="space-y-6">
+                        <Form className="space-y-6 ">
                             <div>
-                                <label htmlFor="usuario" className="block text-sm font-medium text-gray-300">Usuario</label>
                                 <Field
                                     type="text"
                                     name="usuario"
-                                    className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+                                    className="w-full px-3 py-2 mt-1 text-white border-b focus:outline-none focus:ring-2"
+                                    placeholder="Usuario"
                                 />
                                 <ErrorMessage name="usuario" component="div" className="mt-1 text-xs text-red-400" />
                             </div>
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
                                 <Field
                                     type="password"
                                     name="password"
-                                    className="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+                                    className="w-full px-3 py-2 mt-1 text-white border-b focus:outline-none focus:ring-2"
+                                    placeholder="Contraseña"
                                 />
                                 <ErrorMessage name="password" component="div" className="mt-1 text-xs text-red-400" />
                             </div>
@@ -67,7 +67,7 @@ function LoginPage() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full py-2 px-4 font-semibold text-white bg-purple-600 rounded-md hover:bg-purple-700 disabled:bg-gray-500"
+                                className="w-full py-2 px-4 font-semibold text-white border rounded-md border-white disabled:bg-gray-500 hover:bg-white hover:text-purple-600 transition-colors cursor-pointer"
                             >
                                 {isSubmitting ? 'Ingresando...' : 'Ingresar'}
                             </button>

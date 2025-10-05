@@ -1,13 +1,26 @@
 import React, { useState, useContext, useMemo } from "react";
+import { useFetch } from "./hooks/useFetch";
+import { useEffect } from "react";
 
 const ProductosContext = React.createContext();
 
 export function ProductosProvider({ children }) {
+
+    const { data, loading, error } = useFetch("http://localhost:3000/productos");
+
     const [productos, setProductos] = useState([
-        { id: 1, nombre: "Auriculares Inalambricos", categoria: "Audio", precio: 100, stock: 100 },
-        { id: 2, nombre: "Smartphone", categoria: "Moviles", precio: 200, stock: 50 },
-        { id: 3, nombre: "Laptop", categoria: "Computadoras", precio: 300, stock: 5 },
+        // { id: 1, nombre: "Auriculares Inalambricos", categoria: "Audio", precio: 100, stock: 100 },
+        // { id: 2, nombre: "Smartphone", categoria: "Moviles", precio: 200, stock: 50 },
+        // { id: 3, nombre: "Laptop", categoria: "Computadoras", precio: 300, stock: 5 },
     ]);
+
+    useEffect(() => {
+        if (data) {
+            setProductos(data.data);
+        }
+    }, [data]);
+    
+
     const agregarProducto = (producto) => {
         setProductos(prevProductos => [...prevProductos, producto]);
     };

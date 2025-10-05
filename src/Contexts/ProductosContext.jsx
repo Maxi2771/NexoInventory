@@ -8,11 +8,7 @@ export function ProductosProvider({ children }) {
 
     const { data, loading, error } = useFetch("http://localhost:3000/productos");
 
-    const [productos, setProductos] = useState([
-        // { id: 1, nombre: "Auriculares Inalambricos", categoria: "Audio", precio: 100, stock: 100 },
-        // { id: 2, nombre: "Smartphone", categoria: "Moviles", precio: 200, stock: 50 },
-        // { id: 3, nombre: "Laptop", categoria: "Computadoras", precio: 300, stock: 5 },
-    ]);
+    const [productos, setProductos] = useState([]);
 
     useEffect(() => {
         if (data) {

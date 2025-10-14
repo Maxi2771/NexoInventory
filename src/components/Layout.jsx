@@ -10,19 +10,25 @@ function Layout() {
     const { user, isAuthenticated, logout } = useUser();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => { // Hacemos la función async
+        await logout(); // Esperamos a que el logout se complete
         navigate('/login', { replace: true });
     };
 
     return (
         <div className="flex-grow flex items-start justify-center">
             <Menu>
-                {isAuthenticated ? (
-                    <p className="w-2xs h-20 flex items-center px-4 py-2 rounded-lg text-2xl border-b font-bold text-white">{user.name}</p>
+                {isAuthenticated && user ? ( // Verificamos que user no sea null
+                    // 👇 ¡Aquí está el cambio!
+                    <p className="w-2xs h-20 flex items-center px-4 py-2 rounded-lg text-2xl border-b font-bold text-white">
+                        {user.nombre || user.email}
+                    </p>
                 ) : (
-                    <p className="w-2xs h-20 flex items-center px-4 py-2 rounded-lg text-2xl border-b text-gray-400">Cargando...</p>
+                    <p className="w-2xs h-20 flex items-center px-4 py-2 rounded-lg text-2xl border-b text-gray-400">
+                        Cargando...
+                    </p>
                 )}
+                {/* ... (el resto de tu componente no cambia) ... */}
                 <div className="flex flex-col space-y-2 w-xs justify-center items-center mt-50">
                     <Btn to="/" icon={DashboardI}>Dashboard</Btn>
                     <Btn to="/productos" icon={ProductosI}>Productos</Btn>

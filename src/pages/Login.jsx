@@ -1,19 +1,22 @@
+// src/pages/Login.jsx
+
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useUser } from '../Contexts/UserContext';
 
+// 👇 3. Actualiza el schema para que valide 'email'
 const LoginSchema = Yup.object().shape({
-    usuario: Yup.string()
-        .min(3, 'El usuario debe tener al menos 3 caracteres')
-        .required('El usuario es obligatorio'),
+    email: Yup.string()
+        .email('El email no es válido')
+        .required('El email es obligatorio'),
     password: Yup.string()
         .min(6, 'La contraseña debe tener al menos 6 caracteres')
         .required('La contraseña es obligatoria'),
 });
 
 function LoginPage() {
-    const { authenticate, isAuthenticated } = useUser();
+    const { login, isAuthenticated } = useUser();
     const navigate = useNavigate();
 
     if (isAuthenticated) {
@@ -26,29 +29,29 @@ function LoginPage() {
                 <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
 
                 <Formik
-                    initialValues={{ usuario: '', password: '' }}
-                    validationSchema={LoginSchema}
-                    onSubmit={(values, { setSubmitting, setStatus }) => {
-                        // Autenticación cliente contra el usuario de prueba
-                        const ok = authenticate(values);
-                        if (ok) {
+                    initialValues={{ email: '', password: '' }}
+                    validationSchema={LoginSchema} // 👈 Asegúrate de pasarlo aquí
+                    onSubmit={async (values, { setSubmitting, setStatus }) => {
+                        try {
+                            await login(values.email, values.password);
                             navigate('/', { replace: true });
-                        } else {
-                            setStatus('Usuario o contraseña incorrectos');
+                        } catch (error) {
+                            setStatus(error.message || 'Email o contraseña incorrectos');
                         }
                         setSubmitting(false);
                     }}
                 >
+                    {/* 👇 1. Aquí está la función que te da acceso a isSubmitting y status */}
                     {({ isSubmitting, status }) => (
                         <Form className="space-y-6 ">
                             <div>
                                 <Field
-                                    type="text"
-                                    name="usuario"
+                                    type="email" // Cambiado a 'email' para mejor semántica
+                                    name="email"   // 👈 2. Cambia 'usuario' por 'email'
                                     className="w-full px-3 py-2 mt-1 text-white border-b focus:outline-none focus:ring-2"
-                                    placeholder="Usuario"
+                                    placeholder="Email"
                                 />
-                                <ErrorMessage name="usuario" component="div" className="mt-1 text-xs text-red-400" />
+                                <ErrorMessage name="email" component="div" className="mt-1 text-xs text-red-400" />
                             </div>
                             <div>
                                 <Field

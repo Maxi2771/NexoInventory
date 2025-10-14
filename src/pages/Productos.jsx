@@ -13,7 +13,7 @@ const { productos, eliminarProducto } = useProductos();
     const productColumns = [
         { header: "ID", accessor: "id" },
         { header: "Nombre", accessor: "nombre" },
-        { header: "Categoría", accessor: "categoria" },
+        { header: "Categoría", accessor: "categoria_id" },
         { header: "Precio", accessor: "precio" },
         { header: "Stock", accessor: "stock" },
         { header: "Acciones", accessor: "actions" },

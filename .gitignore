@@ -24,3 +24,9 @@ dist-ssr
 
 # Warp local-only guide
 WARP.md
+
+*.env
+.env.local
+.env.*.local
+
+./backend

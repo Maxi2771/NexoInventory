@@ -1,39 +1,77 @@
-import React, { useState, useContext, useMemo } from 'react';
+// src/Contexts/UserContext.jsx
+
+import React, { useState, useContext, useMemo, useEffect } from 'react';
+import { supabase } from '../services/supabaseClient';
 
 const UserContext = React.createContext();
 
 export function UserProvider({ children }) {
-const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const TEST_CREDENTIALS = {
-        usuario: 'admin',
-        password: 'admin123',
-        name: 'Admin Demo',
-        role: 'Admin',
-    };
+    useEffect(() => {
+        const manageSession = async () => {
+            // Primero, obtenemos la sesión de Supabase Auth
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (session) {
+                // Si hay sesión, buscamos el perfil en nuestra tabla 'usuarios'
+                const { data: profile } = await supabase
+                    .from('usuarios')
+                    .select('nombre, rol')
+                    .eq('id', session.user.id)
+                    .single(); // .single() para obtener un solo objeto
 
-    const login = (userData) => setUser(userData ?? { name: 'Usuario', role: 'User' });
-    const logout = () => { setUser(null); };
+                // Combinamos los datos de auth y los del perfil en un solo objeto
+                setUser({
+                    ...session.user,
+                    nombre: profile?.nombre,
+                    rol: profile?.rol,
+                });
+            } else {
+                setUser(null);
+            }
+            setLoading(false);
+        };
+        
+        manageSession();
 
-    const authenticate = ({ usuario, password }) => {
-        const ok = usuario === TEST_CREDENTIALS.usuario && password === TEST_CREDENTIALS.password;
-        if (ok) {
-            setUser({ name: TEST_CREDENTIALS.name, role: TEST_CREDENTIALS.role });
-        }
-        return ok;
-    };
+        // Escuchamos cambios para manejar login/logout en tiempo real
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            // Hacemos el mismo proceso cuando el estado de la sesión cambia
+            if (session) {
+                manageSession();
+            } else {
+                setUser(null);
+            }
+        });
 
-    // useMemo evita que el objeto 'value' se cree de nuevo en cada render a menos que el estado 'user' cambie.
+        return () => {
+            subscription?.unsubscribe();
+        };
+    }, []);
+
     const value = useMemo(
         () => ({
             user,
-            isAuthenticated: !!user, //V si hay usuario, F si no
-            login,
-            logout,
-            authenticate,
+            isAuthenticated: !!user,
+            loading,
+            login: async (email, password) => {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                return data;
+            },
+            logout: async () => {
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
+            },
         }),
-        [user]
+        [user, loading]
     );
+
+    if (loading) {
+        return <div>Cargando...</div>;
+    }
 
     return (
         <UserContext.Provider value={value}>

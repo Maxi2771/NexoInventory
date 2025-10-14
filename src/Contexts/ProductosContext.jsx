@@ -1,36 +1,69 @@
-import React, { useState, useContext, useMemo } from "react";
-import { useFetch } from "./hooks/useFetch";
-import { useEffect } from "react";
+// src/Contexts/ProductosContext.jsx
+
+import React, { useState, useContext, useMemo, useEffect } from "react";
+import { supabase } from '../services/supabaseClient'; // 👈 1. Importa el cliente
 
 const ProductosContext = React.createContext();
 
 export function ProductosProvider({ children }) {
-
-    const { data, loading, error } = useFetch("http://localhost:3000/productos");
-
     const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    // 2. Carga inicial de productos desde Supabase
     useEffect(() => {
-        if (data) {
-            setProductos(data.data);
-        }
-    }, [data]);
-    
+        const getProductos = async () => {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('productos') // Asegúrate que tu tabla se llame 'productos'
+                .select('*');
 
-    const agregarProducto = (producto) => {
-        setProductos(prevProductos => [...prevProductos, producto]);
+            if (error) {
+                console.error('Error fetching productos:', error);
+            } else {
+                setProductos(data);
+            }
+            setLoading(false);
+        };
+        getProductos();
+    }, []);
+
+    // 3. Modifica las funciones para que sean asíncronas y llamen a Supabase
+    const agregarProducto = async (producto) => {
+        const { data, error } = await supabase
+            .from('productos')
+            .insert([producto])
+            .select(); // .select() devuelve el registro insertado
+
+        if (error) {
+            console.error('Error al agregar producto:', error);
+            return;
+        }
+        // Agrega el nuevo producto al estado local para no tener que recargar
+        setProductos(prevProductos => [...prevProductos, ...data]);
     };
-    const eliminarProducto = (id) => {
-        setProductos(prevProductos => prevProductos.filter((producto) => producto.id !== id));
+
+    const eliminarProducto = async (id) => {
+        const { error } = await supabase
+            .from('productos')
+            .delete()
+            .eq('id', id); // Borra la fila donde el 'id' coincida
+
+        if (error) {
+            console.error('Error al eliminar producto:', error);
+            return;
+        }
+        // Filtra el producto eliminado del estado local
+        setProductos(prevProductos => prevProductos.filter((p) => p.id !== id));
     };
 
     const value = useMemo(
         () => ({
             productos,
+            loading,
             agregarProducto,
             eliminarProducto
         }),
-        [productos]
+        [productos, loading]
     );
 
     return (

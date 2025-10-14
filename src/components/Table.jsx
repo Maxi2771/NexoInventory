@@ -22,7 +22,9 @@ function Table({ columns, data, onDelete }) {
                                 const value = row[col.accessor];
                                 return (
                                     <td className="px-6 py-4 whitespace-nowrap" key={`${row.id}-${col.accessor}`}>
-                                        {col.accessor === 'stock' ? (
+                                        {col.cell ? (
+                                            col.cell({ value, row }) 
+                                        ) : col.accessor === 'stock' ? (
                                             <StockIndicator amount={value} />
                                         ) : col.accessor === 'actions' ? (
                                             <div className="flex items-center gap-4">

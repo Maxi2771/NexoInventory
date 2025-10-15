@@ -1,0 +1,38 @@
+# .github/workflows/deploy.yml
+
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "DevelopNi" ] # Se activa cada vez que subes código a la rama DevelopNi
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # Usa la versión de Node que necesites
+
+      - name: Install Dependencies 📦
+        run: npm install
+
+      - name: Build 🛠️
+        run: npm run build
+        env:
+          # Aquí usamos los Secrets que configuraste en GitHub
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # La carpeta que se va a desplegar. Vite por defecto la llama 'dist'.
+          # Si la tuya se llama 'docs', cambia 'dist' por 'docs' aquí.
+          publish_dir: ./docs

@@ -37,6 +37,7 @@ Este proyecto fue construido utilizando un stack de tecnologías modernas que ga
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Chart.js](https://img.shields.io/badge/Chart%20js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
 
 ## 🚀 Cómo Empezar (Uso Local)
 Si deseas ejecutar una copia de este proyecto en tu máquina local, sigue estos sencillos pasos:

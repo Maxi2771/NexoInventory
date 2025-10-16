@@ -7,11 +7,9 @@ import { UserProvider } from './Contexts/UserContext.jsx'
 import { ProductosProvider } from './Contexts/ProductosContext.jsx'
 import { MovimientosProvider } from './Contexts/MovimientosContext.jsx'
 
-const repo = 'NexoInventory'
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename={repo}>
+    <BrowserRouter>
       <UserProvider>
         <ProductosProvider>
           <MovimientosProvider>

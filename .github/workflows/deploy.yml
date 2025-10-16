@@ -4,12 +4,16 @@ name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "DevelopNi" ] # Se activa cada vez que subes código a la rama DevelopNi
+    branches: [ "DevelopNi" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -17,15 +21,15 @@ jobs:
       - name: Set up Node.js ⚙️
         uses: actions/setup-node@v3
         with:
-          node-version: '22' # Usa la versión de Node que necesites
+          node-version: '22'
 
       - name: Install Dependencies 📦
         run: npm install
 
       - name: Build 🛠️
+        # Ejecutamos 'npm run build', que genera la carpeta 'docs' según tu configuración.
         run: npm run build
         env:
-          # Aquí usamos los Secrets que configuraste en GitHub
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           
@@ -33,6 +37,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # La carpeta que se va a desplegar. Vite por defecto la llama 'dist'.
-          # Si la tuya se llama 'docs', cambia 'dist' por 'docs' aquí.
+          # Apuntamos a la carpeta 'docs', que es la que tú usas para el despliegue.
           publish_dir: ./docs

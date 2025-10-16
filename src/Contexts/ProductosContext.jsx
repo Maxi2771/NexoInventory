@@ -50,11 +50,14 @@ export function ProductosProvider({ children }) {
 
     const agregarProducto = async (producto) => {
         const { data, error } = await supabase.from('productos').insert([producto]).select();
+        
         if (error) {
-            console.error('Error al agregar producto:', error);
-            return;
+            console.error('Error detallado de Supabase:', error);
+            alert("Error al agregar producto: " + error.message); 
+            return; 
         }
-        setProductos(prevProductos => [...prevProductos, ...data]);
+
+        await getProductos();
     };
 
     const eliminarProducto = async (id) => {

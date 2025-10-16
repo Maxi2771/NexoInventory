@@ -15,20 +15,17 @@ export function UserProvider({ children }) {
             if (session) {
                 const { data: profile } = await supabase
                     .from('usuarios')
-                    .select('nombre, apellido, roles(rol)')
+                    .select('nombre, apellido, rol')
                     .eq('id', session.user.id)
                     .single();
-
-                console.log("Perfil recibido de Supabase:", profile);
 
                 const newUser = {
                     ...session.user,
                     nombre: profile?.nombre,
                     apellido: profile?.apellido,
-                    rol: profile?.roles?.rol
+                    rol: profile?.rol
                 };
 
-                console.log("Objeto de usuario final:", newUser);
 
                 setUser(newUser);
             } else {

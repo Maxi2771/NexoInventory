@@ -40,7 +40,7 @@ function Productos() {
 
                 {console.log("Usuario actual en Productos.jsx:", user)}
 
-                {user?.rol === 'Administrador' && (
+                {user?.rol === 1 && (
                     <DropdownButton
                         label="Agregar producto"
                         onClick={() => setIsModalOpen(true)} 

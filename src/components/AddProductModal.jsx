@@ -1,12 +1,12 @@
-import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+// 👇 CORRECCIÓN: Usamos nombres en minúscula que coinciden con la BD
 const ProductSchema = Yup.object().shape({
-    Nombre: Yup.string().min(3, 'Muy corto').required('Obligatorio'),
+    nombre: Yup.string().min(3, 'Muy corto').required('Obligatorio'),
     categoria_id: Yup.number().required('Debes seleccionar una categoría'),
-    Precio: Yup.number().positive('Debe ser positivo').required('Obligatorio'),
-    Stock: Yup.number().integer('Debe ser entero').min(0, 'No puede ser negativo').required('Obligatorio'),
+    precio: Yup.number().positive('Debe ser positivo').required('Obligatorio'),
+    stock: Yup.number().integer('Debe ser entero').min(0, 'No puede ser negativo').required('Obligatorio'),
 });
 
 function AddProductModal({ isOpen, onClose, onAddProduct, categorias }) {
@@ -18,19 +18,14 @@ function AddProductModal({ isOpen, onClose, onAddProduct, categorias }) {
                 <h2 className="text-white text-2xl mb-4">Agregar Nuevo Producto</h2>
                 <Formik
                     initialValues={{
-                        Nombre: '',
+                        nombre: '',
                         categoria_id: '',
-                        Precio: '',
-                        Stock: '',
+                        precio: '',
+                        stock: '',
                     }}
                     validationSchema={ProductSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-                        const productData = {
-                            ...values,
-                            Precio: parseFloat(values.Precio),
-                            Stock: parseInt(values.Stock, 10),
-                        };
-                        await onAddProduct(productData);
+                        await onAddProduct(values);
                         setSubmitting(false);
                         resetForm();
                         onClose();
@@ -38,14 +33,12 @@ function AddProductModal({ isOpen, onClose, onAddProduct, categorias }) {
                 >
                     {({ isSubmitting }) => (
                         <Form>
-                            {/* Campo Nombre */}
                             <div className="mb-4">
-                                <label htmlFor="Nombre" className="block text-slate-400 mb-2">Nombre</label>
-                                <Field type="text" name="Nombre" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
-                                <ErrorMessage name="Nombre" component="div" className="text-red-500 text-sm mt-1" />
+                                <label htmlFor="nombre" className="block text-slate-400 mb-2">Nombre</label>
+                                <Field type="text" name="nombre" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
+                                <ErrorMessage name="nombre" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
 
-                            {/* Selector de Categoría */}
                             <div className="mb-4">
                                 <label htmlFor="categoria_id" className="block text-slate-400 mb-2">Categoría</label>
                                 <Field as="select" name="categoria_id" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
@@ -59,21 +52,19 @@ function AddProductModal({ isOpen, onClose, onAddProduct, categorias }) {
                                 <ErrorMessage name="categoria_id" component="div" className="text-red-500 text-sm mt-1" />
                             </div>
 
-                            {/* Campos Precio y Stock */}
                             <div className="grid grid-cols-2 gap-4 mb-6">
                                 <div>
-                                    <label htmlFor="Precio" className="block text-slate-400 mb-2">Precio</label>
-                                    <Field type="number" name="Precio" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
-                                    <ErrorMessage name="Precio" component="div" className="text-red-500 text-sm mt-1" />
+                                    <label htmlFor="precio" className="block text-slate-400 mb-2">Precio</label>
+                                    <Field type="number" name="precio" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
+                                    <ErrorMessage name="precio" component="div" className="text-red-500 text-sm mt-1" />
                                 </div>
                                 <div>
-                                    <label htmlFor="Stock" className="block text-slate-400 mb-2">Stock</label>
-                                    <Field type="number" name="Stock" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
-                                    <ErrorMessage name="Stock" component="div" className="text-red-500 text-sm mt-1" />
+                                    <label htmlFor="stock" className="block text-slate-400 mb-2">Stock</label>
+                                    <Field type="number" name="stock" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
+                                    <ErrorMessage name="stock" component="div" className="text-red-500 text-sm mt-1" />
                                 </div>
                             </div>
-
-                            {/* Botones */}
+                            
                             <div className="flex justify-end gap-4">
                                 <button type="button" onClick={onClose} className="text-slate-400 hover:text-white">Cancelar</button>
                                 <button type="submit" disabled={isSubmitting} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-500">

@@ -15,13 +15,21 @@ export function ProductosProvider({ children }) {
             setLoading(true);
             const { data, error } = await supabase
                 .from('productos') // Asegúrate que tu tabla se llame 'productos'
-                .select('*');
+                .select('*, categorias(nombre)');
 
             if (error) {
                 console.error('Error fetching productos:', error);
-            } else {
-                setProductos(data);
+                setLoading(false);
+                return;
             }
+
+            const productosConNombres = data.map(producto => ({
+                ...producto,
+                categoria: producto.categorias ? producto.categorias.nombre : 'Categoría no encontrada'
+            }));
+
+            setProductos(productosConNombres);
+
             setLoading(false);
         };
         getProductos();

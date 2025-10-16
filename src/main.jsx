@@ -5,6 +5,7 @@ import App from './App.jsx'
 import "./assets/style/input.css"
 import { UserProvider } from './Contexts/UserContext.jsx'
 import { ProductosProvider } from './Contexts/ProductosContext.jsx'
+import { MovimientosProvider } from './Contexts/MovimientosContext.jsx'
 
 const repo = 'NexoInventory'
 
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter basename={repo}>
       <UserProvider>
         <ProductosProvider>
-          <App />
+          <MovimientosProvider>
+            <App />
+          </MovimientosProvider>
         </ProductosProvider>
       </UserProvider>
     </BrowserRouter>

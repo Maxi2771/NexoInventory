@@ -3,22 +3,19 @@ import SearchBar from "../components/SearchBar";
 import Table from "../components/Table";
 import Header from "../components/Header";
 import DownArrow from "../assets/img/icons/DownArrow";
+import { useMovimientos } from "../Contexts/MovimientosContext";
 
 function Movimientos() {
+
+    const { movimientos, eliminarMovimiento } = useMovimientos();
 
     const movimientoColumns = [
         { header: "ID", accessor: "id" },
         { header: "Fecha y hora", accessor: "fecha" },
-        { header: "Producto", accessor: "producto" },
         { header: "Cantidad", accessor: "cantidad" },
+        { header: "Producto", accessor: "producto" },
         { header: "Usuario", accessor: "usuario" },
         { header: "Comentarios", accessor: "comentarios" },
-    ];
-
-    const movimientoData = [
-        { id: '12345', fecha: '2023-10-01 10:00', producto: 'Auriculares Inalámbricos', cantidad: 10, usuario: 'admin', comentarios: 'Entrada de stock' },
-        { id: '54353', fecha: '2023-10-02 14:30', producto: 'Smartphone Galaxy X', cantidad: -5, usuario: 'user1', comentarios: 'Venta realizada' },
-        { id: '57567', fecha: '2023-10-03 09:15', producto: 'Laptop UltraBook Pro', cantidad: 3, usuario: 'admin', comentarios: 'Devolución de cliente' },
     ];
 
     return (
@@ -30,7 +27,7 @@ function Movimientos() {
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>
-            <Table columns={movimientoColumns} data={movimientoData} />
+            <Table columns={movimientoColumns} data={movimientos} onDelete={eliminarMovimiento} />
         </div>
     );
 }

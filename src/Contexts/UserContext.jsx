@@ -18,7 +18,7 @@ export function UserProvider({ children }) {
                 // Si hay sesión, buscamos el perfil en nuestra tabla 'usuarios'
                 const { data: profile } = await supabase
                     .from('usuarios')
-                    .select('nombre, rol')
+                    .select('nombre, apellido, rol')
                     .eq('id', session.user.id)
                     .single(); // .single() para obtener un solo objeto
 
@@ -26,6 +26,7 @@ export function UserProvider({ children }) {
                 setUser({
                     ...session.user,
                     nombre: profile?.nombre,
+                    apellido: profile?.apellido,
                     rol: profile?.rol,
                 });
             } else {

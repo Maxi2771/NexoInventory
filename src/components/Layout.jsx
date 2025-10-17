@@ -27,14 +27,14 @@ function Layout() {
                         Cargando...
                     </p>
                 )}
-                <div className="flex flex-col space-y-2 w-xs justify-center items-center mt-50">
+                <div className="flex flex-col gap-2">
                     <Btn to="/" icon={DashboardI}>Dashboard</Btn>
                     <Btn to="/productos" icon={ProductosI}>Productos</Btn>
                     <Btn to="/movimientos" icon={MovimientosI}>Movimientos</Btn>
                 </div>
                 <button
                     onClick={handleLogout}
-                    className="w-2xs h-15 flex items-center justify-center px-4 py-2 rounded-lg text-xl mt-60 bg-red-500 text-white hover:bg-red-700 transition"
+                    className="w-2xs h-15 flex items-center px-4 py-2 rounded-lg text-xl bg-red-500 text-white hover:bg-red-700 transition"
                 >
                     Cerrar Sesión
                 </button>

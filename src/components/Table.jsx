@@ -2,7 +2,7 @@ import StockIndicator from "./StockIndicator";
 import Trash from "../assets/img/icons/Trash";
 import Edit from "../assets/img/icons/Edit";
 
-function Table({ columns, data, onDelete, userRole }) {
+function Table({ columns, data, onDelete, onEdit, userRole }) {
     return (
         <div className="bg-slate-800 rounded-lg overflow-x-auto border border-slate-700 w-300">
             <table className="w-full min-w-max text-sm text-left text-gray-300">
@@ -25,7 +25,8 @@ function Table({ columns, data, onDelete, userRole }) {
                                         {col.accessor === 'actions' ? (
                                             userRole === 1 && (
                                                 <div className="flex items-center gap-4">
-                                                    <button className="text-slate-400 hover:text-white transition-colors">
+                                                    {/* 2. Conecta el onClick a 'onEdit' */}
+                                                    <button onClick={() => onEdit(row)} className="text-slate-400 hover:text-white transition-colors">
                                                         <Edit />
                                                     </button>
                                                     <button onClick={() => onDelete(row)} className="text-slate-400 hover:text-white transition-colors">

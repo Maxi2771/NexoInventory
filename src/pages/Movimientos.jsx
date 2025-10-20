@@ -23,7 +23,6 @@ function Movimientos() {
             <Header title="Movimientos">
                 <SearchBar placeholder="Buscar por nombre de proveedor..." />
                 <DropdownButton label="Agregar producto" icon={null} />
-                <DropdownButton label="Importar|Exportar" icon={null} />
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>

@@ -1,4 +1,3 @@
-// src/Contexts/UserContext.jsx
 
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
@@ -11,35 +10,33 @@ export function UserProvider({ children }) {
 
     useEffect(() => {
         const manageSession = async () => {
-            // Primero, obtenemos la sesión de Supabase Auth
             const { data: { session } } = await supabase.auth.getSession();
-            
+
             if (session) {
-                // Si hay sesión, buscamos el perfil en nuestra tabla 'usuarios'
                 const { data: profile } = await supabase
                     .from('usuarios')
                     .select('nombre, apellido, rol')
                     .eq('id', session.user.id)
-                    .single(); // .single() para obtener un solo objeto
+                    .single();
 
-                // Combinamos los datos de auth y los del perfil en un solo objeto
-                setUser({
+                const newUser = {
                     ...session.user,
                     nombre: profile?.nombre,
                     apellido: profile?.apellido,
-                    rol: profile?.rol,
-                });
+                    rol: profile?.rol
+                };
+
+
+                setUser(newUser);
             } else {
                 setUser(null);
             }
             setLoading(false);
         };
-        
+
         manageSession();
 
-        // Escuchamos cambios para manejar login/logout en tiempo real
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            // Hacemos el mismo proceso cuando el estado de la sesión cambia
             if (session) {
                 manageSession();
             } else {

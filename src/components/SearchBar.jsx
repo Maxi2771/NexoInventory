@@ -1,4 +1,4 @@
-function SearchBar({ placeholder }) {
+function SearchBar({ placeholder, value, onChange }) {
     return (
         <div className="relative flex-grow w-full">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -9,7 +9,9 @@ function SearchBar({ placeholder }) {
             <input
                 type="text"
                 placeholder={placeholder}
-                className="w-full bg-slate-800 text-white placeholder-gray-400 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-3xl bg-slate-800 text-white placeholder-gray-400 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                value={value}
+                onChange={onChange}
             />
         </div>
     );

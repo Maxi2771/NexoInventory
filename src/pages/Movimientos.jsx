@@ -22,7 +22,6 @@ function Movimientos() {
         <div className="flex text-white flex-col w-full p-4 items-center">
             <Header title="Movimientos">
                 <SearchBar placeholder="Buscar por nombre de proveedor..." />
-                <DropdownButton label="Agregar producto" icon={null} />
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
                 <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>

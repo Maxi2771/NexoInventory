@@ -19,7 +19,7 @@ const sortOptions = [
 
 function Productos() {
 
-    const { productos, categorias, agregarProducto, eliminarProducto, editarProducto, loading, error } = useProductos();
+    const { productos, categorias, comentariosList, agregarProducto, eliminarProducto, editarProducto, loading, error } = useProductos();   
     const { user } = useUser();
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -40,7 +40,7 @@ function Productos() {
 
     const handleConfirmDelete = () => {
         if (productToDelete) {
-            eliminarProducto(productToDelete.id);
+            eliminarProducto(productToDelete); 
             setProductToDelete(null);
         }
     };
@@ -50,22 +50,18 @@ function Productos() {
         setIsAddModalOpen(false);
     };
 
-    const handleEditSubmit = async (values) => {
-        const valuesParaEnviar = { ...values };
-        delete valuesParaEnviar.id;
-        delete valuesParaEnviar.categoria;
-        delete valuesParaEnviar.categorias;
+    const handleEditSubmit = async (formValues) => {
 
-        await editarProducto(productToEdit.id, valuesParaEnviar);
-        setProductToEdit(null); // Cierra el modal de editar
+        await editarProducto(productToEdit, formValues);
+        setProductToEdit(null); 
     };
 
     const filteredAndSortedProductos = useMemo(() => {
         let tempProductos = [...productos];
 
         // 1. Filtrar por Categoría
-        const categoryId = Number(selectedCategory); // Convierte a número
-        if (categoryId) { // Si es un número válido (no 0 o NaN)
+        const categoryId = Number(selectedCategory);
+        if (categoryId) { 
             tempProductos = tempProductos.filter(p => p.categoria_id === categoryId);
         }
 
@@ -78,7 +74,7 @@ function Productos() {
 
         // 3. Ordenar
         tempProductos.sort((a, b) => {
-            // Manejo especial para ordenar por nombre (string)
+            //ordenar por nombre
             if (sortBy === 'nombre' || sortBy === 'categoria') {
                 return a[sortBy].localeCompare(b[sortBy]);
             }
@@ -138,26 +134,31 @@ function Productos() {
             {/* MODAL DE AGREGAR */}
             <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Agregar Nuevo Producto">
                 <ProductForm
-                    initialValues={{ nombre: '', categoria_id: '', precio: '', stock: '' }}
+                    initialValues={{ nombre: '', categoria_id: '', precio: '', stock: '', comentario_id: '' }}
                     categorias={categorias}
+                    comentarios={comentariosList}
                     onSubmit={handleAddSubmit}
                     onClose={() => setIsAddModalOpen(false)}
                     submitText="Guardar Producto"
                 />
             </Modal>
 
-            {/* MODAL DE EDITAR (Solo se muestra si 'productToEdit' no es null) */}
+            {/* MODAL DE EDITAR */}
             <Modal isOpen={!!productToEdit} onClose={() => setProductToEdit(null)} title="Editar Producto">
                 <ProductForm
-                    initialValues={productToEdit} // Le pasamos el producto a editar
+                    initialValues={{
+                        ...productToEdit,
+                        comentario_id: ''
+                    }}
                     categorias={categorias}
+                    comentarios={comentariosList} 
                     onSubmit={handleEditSubmit}
                     onClose={() => setProductToEdit(null)}
                     submitText="Guardar Cambios"
                 />
             </Modal>
 
-            {/* MODAL DE ELIMINAR (Solo se muestra si 'productToDelete' no es null) */}
+            {/* MODAL DE ELIMINAR*/}
             <Modal isOpen={!!productToDelete} onClose={() => setProductToDelete(null)} title="Confirmar Eliminación">
                 <p className="text-slate-400 mb-6">¿Estás seguro de que quieres eliminar este producto?</p>
                 <div className="bg-slate-700 p-4 rounded-lg mb-6">

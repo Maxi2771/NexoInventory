@@ -6,26 +6,27 @@ import DownArrow from "../assets/img/icons/DownArrow";
 import { useMovimientos } from "../Contexts/MovimientosContext";
 
 function Movimientos() {
-
-    const { movimientos, eliminarMovimiento } = useMovimientos();
+    const { movimientos, loading, error } = useMovimientos();
 
     const movimientoColumns = [
         { header: "ID", accessor: "id" },
         { header: "Fecha y hora", accessor: "fecha" },
-        { header: "Cantidad", accessor: "cantidad" },
         { header: "Producto", accessor: "producto" },
         { header: "Usuario", accessor: "usuario" },
-        { header: "Comentarios", accessor: "comentarios" },
+        { header: "Cantidad", accessor: "cantidad" },
+        { header: "Comentarios", accessor: "comentario" },
     ];
+
+    if (loading) { return <p className="text-white p-8 text-center">Cargando movimientos...</p>; }
+    if (error) { return <p className="text-red-500 p-8 text-center">Error al cargar: {error}</p>; }
 
     return (
         <div className="flex text-white flex-col w-full p-4 items-center">
             <Header title="Movimientos">
-                <SearchBar placeholder="Buscar por nombre de proveedor..." />
+                <SearchBar placeholder="Buscar por producto o usuario..." />
                 <DropdownButton label="Ordenar por" icon={DownArrow} />
-                <DropdownButton label="Categoría" icon={DownArrow} />
             </Header>
-            <Table columns={movimientoColumns} data={movimientos} onDelete={eliminarMovimiento} />
+            <Table columns={movimientoColumns} data={movimientos} />
         </div>
     );
 }

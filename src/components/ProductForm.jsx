@@ -1,16 +1,14 @@
-// src/components/ProductForm.jsx
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-// El Schema de validación
 const ProductSchema = Yup.object().shape({
     nombre: Yup.string().min(3, 'Muy corto').required('El nombre es obligatorio'),
     
     categoria_id: Yup.number()
-        .typeError('Debes seleccionar una categoría') // Muestra error si no es un número
-        .required('Debes seleccionar una categoría'), // Detecta el string vacío
-    
+        .typeError('Debes seleccionar una categoría') 
+        .required('Debes seleccionar una categoría'),
+
     precio: Yup.number()
         .typeError('El precio debe ser un número')
         .positive('Debe ser positivo')
@@ -21,11 +19,11 @@ const ProductSchema = Yup.object().shape({
         .integer('Debe ser entero')
         .min(0, 'No puede ser negativo')
         .required('El stock es obligatorio'),
+
+    comentario_id: Yup.number().nullable()
 });
 
-// Este componente recibe todo lo que necesita como props
-function ProductForm({ initialValues, categorias, onSubmit, submitText, onClose }) {
-    return (
+function ProductForm({ initialValues, categorias, comentarios, onSubmit, submitText, onClose }) {    return (
         <Formik
             initialValues={initialValues}
             validationSchema={ProductSchema}
@@ -34,7 +32,7 @@ function ProductForm({ initialValues, categorias, onSubmit, submitText, onClose 
                 setSubmitting(false);
                 onClose(); // Cierra el modal
             }}
-            enableReinitialize // Permite que el form se actualice con nuevos initialValues (para editar)
+            enableReinitialize
         >
             {({ isSubmitting }) => (
                 <Form className="space-y-4">
@@ -67,6 +65,18 @@ function ProductForm({ initialValues, categorias, onSubmit, submitText, onClose 
                             <Field type="number" name="stock" min="0" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600" />
                             <ErrorMessage name="stock" component="div" className="text-red-500 text-sm mt-1" />
                         </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="comentario_id" className="block text-slate-400 mb-2">Motivo del ajuste (si el stock cambió)</label>
+                        <Field as="select" name="comentario_id" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                            <option value="">No aplica / No cambió el stock</option>
+                            {comentarios?.map(com => (
+                                <option key={com.id} value={com.id}>
+                                    {com.comentario}
+                                </option>
+                            ))}
+                        </Field>
                     </div>
                     
                     <div className="flex justify-end gap-4 pt-4">

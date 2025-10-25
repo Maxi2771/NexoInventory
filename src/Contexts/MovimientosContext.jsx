@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from "react";
 import { supabase } from '../services/supabaseClient';
-import { useUser } from './UserContext'; // <-- 1. Importa el hook de usuario
+import { useUser } from './UserContext'; 
 
 const MovimientosContext = React.createContext();
 

@@ -1,27 +1,55 @@
+import React from 'react';
+import { useMovimientos } from '../Contexts/MovimientosContext';
+
+const abreviar = (name) => {
+    if (!name) return 'N/A';
+    return name.substring(0, 20).toUpperCase();
+};
+
 function StockAlerts() {
+
+    const { movimientos, loading } = useMovimientos();
+    const ultimosMovimientos = movimientos.slice(0, 5);
+
     return (
-        <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4">Alertas de stock</h3>
-            <div className="space-y-3">
+        <div className="bg-slate-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 className="text-xl font-bold text-white mb-4">Alertas de Stock</h3>
+            
+            {loading && <p className="text-slate-400">Cargando...</p>}
+            
+            {!loading && ultimosMovimientos.length === 0 && (
+                <p className="text-slate-400">No hay movimientos recientes.</p>
+            )}
 
-                <div className="flex flex-col justify-between items-center bg-red-900/60 p-3 rounded-md text-sm">
-                    <span className="px-9">iphone 10 pro</span>
-                    <span className="font-bold text-red-400">2 unidades</span>
-                </div>
+            <div className="space-y-4">
+                {!loading && ultimosMovimientos.map(mov => {
+                    const esPositivo = mov.cantidad > 0;
+                    const colorClass = esPositivo ? 'text-green-500' : 'text-red-500';
+                    const bgClass = esPositivo ? 'bg-green-500/10' : 'bg-red-500/10';
+                    const iconoTexto = esPositivo ? '↑' : '↓'; 
+                    const signo = esPositivo ? '+' : '';
 
-                <div className="flex flex-col justify-between items-center bg-red-900/60 p-3 rounded-md text-sm">
-                    <span className="px-9">MacBook Air M2</span>
-                    <span className="font-bold text-red-400">2 unidades</span>
-                </div>
-
-                <div className="flex flex-col justify-between items-center bg-green-900/60 p-3 rounded-md text-sm">
-                    <span className="px-9">Samsung Galaxy</span>
-                    <span className="font-bold text-green-400">2 unidades</span>
-                </div>
-
+                    return (
+                        <div key={mov.id} className="flex justify-between items-center">
+                            
+                            <div className="flex items-center gap-3">
+                                <span className={`flex items-center justify-center w-8 h-8 rounded-full ${bgClass} ${colorClass} font-bold text-lg`}>
+                                    {iconoTexto}
+                                </span>
+                                <span className="font-bold text-white text-lg">
+                                    {abreviar(mov.producto)}
+                                </span>
+                            </div>
+                            
+                            <span className={`font-bold text-lg ${colorClass}`}>
+                                {signo}{mov.cantidad}
+                            </span>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
-};
+}
 
 export default StockAlerts;

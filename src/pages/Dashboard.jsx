@@ -3,9 +3,15 @@ import Header from "../components/Header";
 import TopProductsChart from "../components/TopProductsChart";
 import StockAlerts from "../components/StockAlerts";
 import PieChart from "../components/PieChart";
+import { useProductos } from "../Contexts/ProductosContext";
+
+const LOW_STOCK_THRESHOLD = 10;
 
 function Dashboard() {
-    const bajoStockValue = "15";
+    
+    const { productos, loading: productosLoading } = useProductos();
+
+    const bajoStockValue = productos.filter(p => p.stock < LOW_STOCK_THRESHOLD).length;
     const ventasHoyValue = "41";
     const montoVentasValue = "$4,203";
 
@@ -27,11 +33,11 @@ function Dashboard() {
                     <PieChart/>
                     <CardStat
                         title="Productos con bajo stock"
-                        value={bajoStockValue}
-                        isAlert={true}
+                        value={productosLoading ? "..." : bajoStockValue}
+                        isAlert={!productosLoading && bajoStockValue > 0}
                     />
                 </div>
-                <div className="flex w-7xl justify-between m-5">
+                <div className="flex w-7xl justify-between m-5 gap-5">
                     <TopProductsChart />
                     <StockAlerts />
                 </div>

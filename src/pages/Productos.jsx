@@ -155,6 +155,7 @@ function Productos() {
                     onSubmit={handleEditSubmit}
                     onClose={() => setProductToEdit(null)}
                     submitText="Guardar Cambios"
+                    isEditMode={true}
                 />
             </Modal>
 

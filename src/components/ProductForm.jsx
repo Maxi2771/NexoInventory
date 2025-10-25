@@ -23,7 +23,7 @@ const ProductSchema = Yup.object().shape({
     comentario_id: Yup.number().nullable()
 });
 
-function ProductForm({ initialValues, categorias, comentarios, onSubmit, submitText, onClose }) {    return (
+function ProductForm({ initialValues, categorias, comentarios, onSubmit, submitText, onClose, isEditMode = false }) {    return (
         <Formik
             initialValues={initialValues}
             validationSchema={ProductSchema}
@@ -66,18 +66,20 @@ function ProductForm({ initialValues, categorias, comentarios, onSubmit, submitT
                             <ErrorMessage name="stock" component="div" className="text-red-500 text-sm mt-1" />
                         </div>
                     </div>
-
-                    <div>
-                        <label htmlFor="comentario_id" className="block text-slate-400 mb-2">Motivo del ajuste (si el stock cambió)</label>
-                        <Field as="select" name="comentario_id" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
-                            <option value="">No aplica / No cambió el stock</option>
-                            {comentarios?.map(com => (
-                                <option key={com.id} value={com.id}>
-                                    {com.comentario}
-                                </option>
-                            ))}
-                        </Field>
-                    </div>
+                    
+                    { isEditMode && (
+                        <div>
+                            <label htmlFor="comentario_id" className="block text-slate-400 mb-2">Motivo del ajuste (si el stock cambió)</label>
+                            <Field as="select" name="comentario_id" className="w-full bg-slate-700 text-white p-2 rounded border border-slate-600">
+                                <option value="">No aplica / No cambió el stock</option>
+                                {comentarios?.map(com => (
+                                    <option key={com.id} value={com.id}>
+                                        {com.comentario}
+                                    </option>
+                                ))}
+                            </Field>
+                        </div>
+                    )}
                     
                     <div className="flex justify-end gap-4 pt-4">
                         <button type="button" onClick={onClose} className="text-slate-400 hover:text-white font-bold py-2 px-4 rounded">Cancelar</button>

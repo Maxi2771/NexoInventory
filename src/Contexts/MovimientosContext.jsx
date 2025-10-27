@@ -38,21 +38,20 @@ export function MovimientosProvider({ children }) {
                     .order(sortBy, { ascending: sortAsc }) 
                     .range(from, to);                   
 
-                // Ejecutar la consulta
                 const { data, error, count } = await query;
 
                 if (error) {
                     console.error('Error fetching movimientos:', error);
-                    setError(error.message); // 👈 Guardamos el error para mostrarlo
+                    setError(error.message); 
                     setMovimientos([]);
                     setTotalMovimientos(0);
                     setLoading(false);
                     return;
                 }
 
-                // ... (transformación de datos sin cambios)
                 const movimientosConNombres = data.map(movimiento => ({
                     ...movimiento,
+                    fecha_sinFormato: new Date(movimiento.fecha),
                     fecha: new Date(movimiento.fecha).toLocaleString(), 
                     producto: movimiento.productos ? movimiento.productos.nombre : 'N/A',
                     usuario: movimiento.usuarios ? `${movimiento.usuarios.nombre} ${movimiento.usuarios.apellido}` : 'N/A',

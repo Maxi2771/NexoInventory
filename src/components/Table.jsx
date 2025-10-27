@@ -25,7 +25,6 @@ function Table({ columns, data, onDelete, onEdit, userRole }) {
                                         {col.accessor === 'actions' ? (
                                             userRole === 1 && (
                                                 <div className="flex items-center gap-4">
-                                                    {/* 2. Conecta el onClick a 'onEdit' */}
                                                     <button onClick={() => onEdit(row)} className="text-slate-400 hover:text-white transition-colors">
                                                         <Edit />
                                                     </button>

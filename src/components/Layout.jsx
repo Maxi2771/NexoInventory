@@ -10,8 +10,8 @@ function Layout() {
     const { user, isAuthenticated, logout } = useUser();
     const navigate = useNavigate();
 
-    const handleLogout = async () => { // Hacemos la función async
-        await logout(); // Esperamos a que el logout se complete
+    const handleLogout = async () => {
+        await logout(); 
         navigate('/login', { replace: true });
     };
 

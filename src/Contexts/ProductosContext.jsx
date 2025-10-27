@@ -126,7 +126,7 @@ export function ProductosProvider({ children }) {
         }
 
         if (stockCambiado) {
-            const cantidadAjuste = stockNuevo - stockOriginal; // ej: 95 - 100 = -5
+            const cantidadAjuste = stockNuevo - stockOriginal; 
             await registrarMovimiento(originalProduct.id, cantidadAjuste, formValues.comentario_id);
         }
 
@@ -168,7 +168,7 @@ export function ProductosProvider({ children }) {
             setCurrentPage,
             totalPages
         }),
-        [productos, categorias, comentariosList, loading, error, user, currentPage, totalPages] // Dependencias
+        [productos, categorias, comentariosList, loading, error, user, currentPage, totalPages] 
     );
 
     return (

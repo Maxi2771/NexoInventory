@@ -3,7 +3,7 @@ function CardStat({ title, value, detail, isAlert = false }) {
     const titleColor = isAlert ? "text-red-400" : "";
 
     return (
-        <div className={`rounded-lg border border-gray-700 flex flex-col justify-center text-center items-center h-30 w-62 ${cardColor}`}>
+        <div className={`rounded-lg border border-gray-700 flex flex-col justify-center text-center items-center h-30 w-100 ${cardColor}`}>
             <p className={`text-sm font-medium ${titleColor}`}>{title}</p>
             <p className="text-3xl font-bold mt-2">{value}</p>
             {!detail ? (

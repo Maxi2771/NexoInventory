@@ -70,7 +70,7 @@ function Movimientos() {
             <div className="flex justify-between items-center w-300 mt-6">
                 <button 
                     onClick={handlePrevPage} 
-                    // Deshabilitamos el botón si estamos en la primera página o cargando
+                    // Deshabilitamos botón si estamos en la primera página o cargando
                     disabled={currentPage === 0 || loading}
                     className="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >

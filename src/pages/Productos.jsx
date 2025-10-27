@@ -165,7 +165,6 @@ function Productos() {
                 </button>
             </div>
 
-            {/* MODAL DE AGREGAR */}
             <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Agregar Nuevo Producto">
                 <ProductForm
                     initialValues={{ nombre: '', categoria_id: '', precio: '', stock: '', comentario_id: '' }}
@@ -177,7 +176,6 @@ function Productos() {
                 />
             </Modal>
 
-            {/* MODAL DE EDITAR */}
             <Modal isOpen={!!productToEdit} onClose={() => setProductToEdit(null)} title="Editar Producto">
                 <ProductForm
                     initialValues={{
@@ -193,7 +191,6 @@ function Productos() {
                 />
             </Modal>
 
-            {/* MODAL DE ELIMINAR*/}
             <Modal isOpen={!!productToDelete} onClose={() => setProductToDelete(null)} title="Confirmar Eliminación">
                 <p className="text-slate-400 mb-6">¿Estás seguro de que quieres eliminar este producto?</p>
                 <div className="bg-slate-700 p-4 rounded-lg mb-6">

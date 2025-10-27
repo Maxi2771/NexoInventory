@@ -1,4 +1,3 @@
-// src/components/Modal.jsx
 
 function Modal({ isOpen, onClose, title, children }) {
     if (!isOpen) {
@@ -20,7 +19,6 @@ function Modal({ isOpen, onClose, title, children }) {
                     <button onClick={onClose} className="text-slate-400 hover:text-white text-2xl">&times;</button>
                 </div>
                 
-                {/* Aquí se renderizará el formulario o el mensaje de confirmación */}
                 {children}
             </div>
         </div>

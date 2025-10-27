@@ -1,11 +1,10 @@
-// src/pages/Login.jsx
 
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useUser } from '../Contexts/UserContext';
+import bgLogin from '../assets/img/bg_login.png';
 
-// 👇 3. Actualiza el schema para que valide 'email'
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
         .email('El email no es válido')
@@ -24,13 +23,15 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[url(src/assets/img/bg_login.png)] bg-black bg-cover text-white">
+        <div 
+            className="flex items-center justify-center min-h-screen bg-black bg-cover text-white" style={{ backgroundImage: `url(${bgLogin})` }}
+        >
             <div className="w-full max-w-md p-8 space-y-6 rounded-lg shadow-lg transparent bg-white/12">
                 <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
 
                 <Formik
                     initialValues={{ email: '', password: '' }}
-                    validationSchema={LoginSchema} // 👈 Asegúrate de pasarlo aquí
+                    validationSchema={LoginSchema} 
                     onSubmit={async (values, { setSubmitting, setStatus }) => {
                         try {
                             await login(values.email, values.password);
@@ -41,13 +42,12 @@ function LoginPage() {
                         setSubmitting(false);
                     }}
                 >
-                    {/* 👇 1. Aquí está la función que te da acceso a isSubmitting y status */}
                     {({ isSubmitting, status }) => (
                         <Form className="space-y-6 ">
                             <div>
                                 <Field
-                                    type="email" // Cambiado a 'email' para mejor semántica
-                                    name="email"   // 👈 2. Cambia 'usuario' por 'email'
+                                    type="email" 
+                                    name="email"   
                                     className="w-full px-3 py-2 mt-1 text-white border-b focus:outline-none focus:ring-2"
                                     placeholder="Email"
                                     autoComplete="off"

@@ -2,6 +2,8 @@ import React, { useState, useContext, useMemo, useEffect } from "react";
 import { supabase } from '../services/supabaseClient';
 import { useUser } from './UserContext'; 
 
+const pageSize = 10;
+
 const MovimientosContext = React.createContext();
 
 export function MovimientosProvider({ children }) {
@@ -9,24 +11,46 @@ export function MovimientosProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); 
     const { user, loading: userLoading } = useUser();
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalMovimientos, setTotalMovimientos] = useState(0);
+
+    
+    const [sortBy, setSortBy] = useState('fecha');
+    const [sortAsc, setSortAsc] = useState(false);
+
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [sortBy, sortAsc]);
+
     useEffect(() => {
         if (!userLoading && user) {
             const getMovimientos = async () => {
                 setLoading(true);
                 setError(null);
                 
-                const { data, error } = await supabase
+                const from = currentPage * pageSize;
+                const to = from + pageSize - 1;
+
+                let query = supabase
                     .from('movimientos')
-                    .select('id, fecha, cantidad, productos(nombre), usuarios(nombre, apellido), comentarios(comentario)')
-                    .order('fecha', { ascending: false });
+                    .select('id, fecha, cantidad, productos(nombre), usuarios(nombre, apellido), comentarios(comentario)', { count: 'exact' })
+                    .order(sortBy, { ascending: sortAsc }) 
+                    .range(from, to);                   
+
+                // Ejecutar la consulta
+                const { data, error, count } = await query;
 
                 if (error) {
                     console.error('Error fetching movimientos:', error);
-                    setError(error.message); 
+                    setError(error.message); // 👈 Guardamos el error para mostrarlo
+                    setMovimientos([]);
+                    setTotalMovimientos(0);
                     setLoading(false);
                     return;
                 }
 
+                // ... (transformación de datos sin cambios)
                 const movimientosConNombres = data.map(movimiento => ({
                     ...movimiento,
                     fecha: new Date(movimiento.fecha).toLocaleString(), 
@@ -36,6 +60,7 @@ export function MovimientosProvider({ children }) {
                 }));
 
                 setMovimientos(movimientosConNombres);
+                setTotalMovimientos(count || 0);
                 setLoading(false);
             };
             getMovimientos();
@@ -43,11 +68,13 @@ export function MovimientosProvider({ children }) {
             setMovimientos([]);
             setLoading(false);
         }
-    }, [user, userLoading]);
+    }, [user, userLoading, currentPage, sortBy, sortAsc]);
+
+    const totalPages = Math.ceil(totalMovimientos / pageSize);
 
     const value = useMemo(
-        () => ({ movimientos, loading, error }),
-        [movimientos, loading, error]
+        () => ({ movimientos, loading, error, currentPage, setCurrentPage, totalPages, sortBy, setSortBy, sortAsc, setSortAsc }),
+        [movimientos, loading, error, currentPage, totalPages, sortBy, sortAsc]
     );
 
     return (

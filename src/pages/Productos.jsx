@@ -19,7 +19,7 @@ const sortOptions = [
 
 function Productos() {
 
-    const { productos, categorias, comentariosList, agregarProducto, eliminarProducto, editarProducto, loading, error } = useProductos();   
+    const { productos, categorias, comentariosList, agregarProducto, eliminarProducto, editarProducto, loading, error, totalPages, currentPage, setCurrentPage } = useProductos();   
     const { user } = useUser();
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -37,6 +37,18 @@ function Productos() {
         { header: "Stock", accessor: "stock" },
         { header: "Acciones", accessor: "actions" },
     ];
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     const handleConfirmDelete = () => {
         if (productToDelete) {
@@ -85,7 +97,7 @@ function Productos() {
         return tempProductos;
     }, [productos, searchTerm, selectedCategory, sortBy]);
 
-    if (loading) {
+    if (loading && !productos.length) {
         return <p className="text-white p-8 text-center">Cargando productos...</p>;
     }
 
@@ -129,7 +141,29 @@ function Productos() {
                 data={filteredAndSortedProductos}
                 onDelete={setProductToDelete}
                 onEdit={setProductToEdit}
-                userRole={user?.rol} />
+                userRole={user?.rol} 
+            />
+            <div className="flex justify-between items-center w-300 mt-6">
+                <button 
+                    onClick={handlePrevPage} 
+                    disabled={currentPage === 0 || loading}
+                    className="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Anteriores
+                </button>
+                
+                <span className="text-slate-400">
+                    Página {currentPage + 1} de {totalPages > 0 ? totalPages : 1}
+                </span>
+
+                <button 
+                    onClick={handleNextPage} 
+                    disabled={currentPage >= totalPages - 1 || loading}
+                    className="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Siguientes
+                </button>
+            </div>
 
             {/* MODAL DE AGREGAR */}
             <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Agregar Nuevo Producto">

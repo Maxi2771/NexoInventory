@@ -2,6 +2,8 @@ import React, { useState, useContext, useMemo, useEffect, useCallback } from "re
 import { supabase } from '../services/supabaseClient';
 import { useUser } from './UserContext'; 
 
+const pageSize = 10;
+
 const ProductosContext = React.createContext();
 
 export function ProductosProvider({ children }) {
@@ -13,19 +15,26 @@ export function ProductosProvider({ children }) {
 
     const { user, loading: userLoading } = useUser();
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalProductos, setTotalProductos] = useState(0);
 
     const getProductos = useCallback(async () => {
-        const { data, error } = await supabase
+        const from = currentPage * pageSize;
+        const to = from + pageSize - 1;
+
+        const { data, error, count } = await supabase
             .from('productos')
-            .select('*, categorias(nombre)')
-            .eq('esta_activo', true);
+            .select('*, categorias(nombre)', { count: 'exact' })
+            .eq('esta_activo', true)
+            .range(from, to);
         if (error) { console.error('Error fetching productos:', error); setError(error.message); return; }
         const productosConNombres = data.map(producto => ({
             ...producto,
             categoria: producto.categorias ? producto.categorias.nombre : 'Categoría no encontrada'
         }));
         setProductos(productosConNombres);
-    }, []);
+        setTotalProductos( count || 0 );
+    }, [ currentPage ]);
 
     const getCategorias = useCallback(async () => {
         const { data, error } = await supabase.from('categorias').select('id, nombre');
@@ -143,6 +152,8 @@ export function ProductosProvider({ children }) {
     setProductos(prev => prev.filter((p) => p.id !== producto.id));
 };
 
+    const totalPages = Math.ceil(totalProductos / pageSize);
+
     const value = useMemo(
         () => ({
             productos,
@@ -153,8 +164,11 @@ export function ProductosProvider({ children }) {
             agregarProducto,
             editarProducto,
             eliminarProducto,
+            currentPage,
+            setCurrentPage,
+            totalPages
         }),
-        [productos, categorias, comentariosList, loading, error, user] // Dependencias
+        [productos, categorias, comentariosList, loading, error, user, currentPage, totalPages] // Dependencias
     );
 
     return (

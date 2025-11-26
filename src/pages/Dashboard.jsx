@@ -2,7 +2,6 @@ import CardStat from "../components/CardStat";
 import Header from "../components/Header";
 import TopProductsChart from "../components/TopProductsChart";
 import StockAlerts from "../components/StockAlerts";
-import PieChart from "../components/PieChart";
 import { useProductos } from "../Contexts/ProductosContext";
 import { useMovimientos } from "../Contexts/MovimientosContext";
 import { useMemo } from "react";
@@ -22,13 +21,9 @@ function Dashboard() {
     const { productos, loading: productosLoading } = useProductos();
     const { movimientos, loading: movimientosLoading } = useMovimientos();
 
-const { bajoStockValue, movimientosHoyValue, valorInventarioValue } = useMemo(() => {
+    const { bajoStockValue, movimientosHoyValue, valorInventarioValue } = useMemo(() => {
         const bajoStock = productos.filter(p => p.stock < LOW_STOCK_THRESHOLD).length;
-
-        //Movimientos de hoy
         const movsHoy = movimientos.filter(mov => datosHoy(mov.fecha_sinFormato)).length;
-
-        //Valor total del inventario
         const valorTotal = productos.reduce((sum, p) => {
             const precio = p.precio || 0;
             const stock = p.stock || 0;
@@ -45,10 +40,11 @@ const { bajoStockValue, movimientosHoyValue, valorInventarioValue } = useMemo(()
     const isLoading = productosLoading || movimientosLoading;
 
     return (
-        <div className="flex text-white flex-col w-full p-4">
-            <Header title="DashBoard"></Header>
-            <div className="flex flex-col items-center">
-                <div className="flex w-7xl justify-between">
+        <div className="flex text-white flex-col w-full p-4 md:p-8"> 
+            <Header title="Dashboard"></Header>
+            
+            <div className="flex flex-col items-center w-full space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-7xl">
                     <CardStat
                         title="Movimientos de hoy"
                         value={isLoading ? "..." : movimientosHoyValue}
@@ -60,14 +56,19 @@ const { bajoStockValue, movimientosHoyValue, valorInventarioValue } = useMemo(()
                         detail="Valor total del stock"
                     />
                     <CardStat
-                        title="Productos con bajo stock"
+                        title="Productos bajo stock"
                         value={productosLoading ? "..." : bajoStockValue}
                         isAlert={!productosLoading && bajoStockValue > 0}
                     />
                 </div>
-                <div className="flex w-7xl justify-between m-5 gap-5">
-                    <TopProductsChart productos={productos} loading={isLoading} />
-                    <StockAlerts />
+
+                <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-6">
+                    <div className="w-full lg:w-2/3">
+                        <TopProductsChart productos={productos} loading={isLoading} />
+                    </div>
+                    <div className="w-full lg:w-1/3">
+                        <StockAlerts />
+                    </div>
                 </div>
             </div>
         </div>

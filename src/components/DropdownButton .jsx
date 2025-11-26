@@ -7,7 +7,7 @@ function DropdownButton({ label, icon: Icon, options = [], value, onChange, onCl
         return (
             <button
                 onClick={onClick}
-                className="w-full md:w-auto flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors whitespace-nowrap shadow-sm"
+                className="w-full md:w-auto flex items-center justify-center gap-2 bg-indigo-600/80 hover:bg-indigo-600 text-white font-medium py-2.5 px-4 rounded-lg transition-colors whitespace-nowrap shadow-sm"
             >
                 {Icon && <Icon className="w-5 h-5" />}
                 {label}

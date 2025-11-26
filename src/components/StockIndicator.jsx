@@ -2,7 +2,7 @@ const StockIndicator = ({ amount }) => {
     let colorClass = 'bg-gray-500';
     if (amount > 50) {
         colorClass = 'bg-green-500';
-    } else if (amount > 10) {
+    } else if (amount > 20) {
         colorClass = 'bg-orange-500';
     } else if (amount > 0) {
         colorClass = 'bg-red-500';

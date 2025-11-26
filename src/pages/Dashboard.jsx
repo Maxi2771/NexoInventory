@@ -7,7 +7,7 @@ import { useProductos } from "../Contexts/ProductosContext";
 import { useMovimientos } from "../Contexts/MovimientosContext";
 import { useMemo } from "react";
 
-const LOW_STOCK_THRESHOLD = 10;
+const LOW_STOCK_THRESHOLD = 21;
 
 const datosHoy = (someDate) => {
     if (!someDate) return false;
